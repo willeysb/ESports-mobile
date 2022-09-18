@@ -1,6 +1,6 @@
 import { StatusBar } from "react-native";
 import { Background } from "./src/components/Background";
-import { Home } from "./src/components/Home";
+import { Routes } from "./src/routes";
 
 import {
   useFonts,
@@ -26,7 +26,7 @@ export default function App() {
         backgroundColor='transparent'
         translucent
       />
-      {fontsLoaded ? <Home /> : <Loading />}
+      {fontsLoaded ? <Routes /> : <Loading />}
     </Background>
   );
 }
