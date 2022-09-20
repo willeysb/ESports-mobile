@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Image, FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native'
 
-import { Heading } from '../Heading';
 import { GameCard, GameCardProps } from '../GameCard';
-import { Background } from '../Background';
+import { Background } from '../../components/Background';
+import { Heading } from '../../components/Heading';
+import { DuoMatch } from '../../components/DuoMatch';
 
 import logoImg from '../../assets/logo-nlw-esports.png'
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { FlatList, Image, TouchableOpacity, View } from 'react-native';
+import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRoute, useNavigation } from '@react-navigation/native'
 import { Entypo } from '@expo/vector-icons'
@@ -13,8 +13,12 @@ import { Background } from '../../components/Background';
 import { GameParams } from '../../@types/navigation';
 import { Heading } from '../../components/Heading';
 import { DuoCard, DuoCardProps } from '../../components/DuoCard';
+import { DuoMatch } from '../../components/DuoMatch';
 
 export function Game() {
+
+  const [duos, setDuos] = useState<DuoCardProps[]>([])
+  const [discordDuoSelected, setDiscordDuoSelected] = useState('')
 
   const navigation = useNavigation();
   const route = useRoute();
@@ -24,7 +28,14 @@ export function Game() {
     navigation.goBack()
   }
 
-  const [duos, setDuos] = useState<DuoCardProps[]>([])
+  async function getDiscordUser(adsId: string) {
+    fetch(`http://192.168.1.7:3333/ads/${adsId}/discord`)
+      .then(response => response.json())
+      .then(data => {
+        let { discord } = data
+        setDiscordDuoSelected(discord)
+      })
+  }
 
   useEffect(()=>{
     fetch(`http://192.168.1.7:3333/games/${game.id}/ads`)
@@ -66,13 +77,15 @@ export function Game() {
           renderItem={({ item }) => 
             <DuoCard 
               data={item}
-              onConnect={() => {}}/>
+              onConnect={() => getDiscordUser(item.id)}/>
           }
           horizontal
           style={styles.containerList}
-          contentContainerStyle={styles.contentList}
+          contentContainerStyle={[ duos.length > 0 ? styles.contentList : styles.contentEmptyList ]}
           showsHorizontalScrollIndicator={false}
+          ListEmptyComponent={<Text style={styles.emptyListText}>Não há anúncios cadastrados até o momento.</Text>}
         />
+        <DuoMatch visible={discordDuoSelected.length > 0} discord={discordDuoSelected} onClose={() => setDiscordDuoSelected('')}/>
       </SafeAreaView>
     </Background>
   );

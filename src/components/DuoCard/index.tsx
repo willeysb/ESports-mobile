@@ -42,7 +42,7 @@ export function DuoCard({data, onConnect}: Props) {
       />
 
       <TouchableOpacity 
-        onPress={onConnect}
+        onPress={() => onConnect()}
         style={styles.button}>
         <GameController 
           color={THEME.COLORS.TEXT}
